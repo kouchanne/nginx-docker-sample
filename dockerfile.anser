@@ -1,0 +1,35 @@
+# ベースイメージを定義
+FROM nginx:1.13.1-alpine AS production-stage
+
+# 環境変数をセット
+ENV LANG C.UTF-8
+ENV TZ Asia/Tokyo
+
+
+# カレントディレクトリのworkをコンテナ内の/home/workへコピー
+COPY work/ /home/work
+
+
+# コンテナ内でmkdirコマンドを実行
+RUN mkdir -p /var/log/nginx/log\
+    && mkdir /home/www\
+    && mkdir /home/www/document-root
+
+
+# カレントディレクトリのindex.htmlを/home/www/document-root/へコピー
+COPY ./index.html /home/www/document-root/
+
+
+# 作業ディレクトリを　/home/work へ変更
+WORKDIR /home/work
+
+# defaultのconfファイルを削除し、定義しているものへ変更
+RUN rm -f /etc/nginx/conf.d/*.conf\
+    && rm -f /etc/nginx/nginx.conf\
+    && cp -i *.conf /etc/nginx
+
+# コンテナ内のポートを開放
+EXPOSE 80 443
+
+# nginxを実行するコマンド
+CMD ["nginx", "-g", "daemon off;","-c","/etc/nginx/nginx.conf"]

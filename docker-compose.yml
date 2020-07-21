@@ -1,0 +1,12 @@
+version: "3"
+services:
+  nginx-sample:
+    build: .
+    image: nginx-sample
+    container_name: nginx-sample
+    ports:
+      - "80:80"
+    environment:
+      TZ: "Asia/Tokyo"
+    volumes:
+      - ./index.html:/home/www/document-root/index.html
