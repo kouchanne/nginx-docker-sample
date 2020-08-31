@@ -1,11 +1,11 @@
 version: "3"
 services:
-  nginx-sample:
+  nginx-ssl-sample:
     build: .
-    image: nginx-sample
-    container_name: nginx-sample
+    image: nginx-ssl-sample
+    container_name: nginx-ssl-sample
     ports:
-      - "80:80"
+      - "443:443"
     environment:
       TZ: "Asia/Tokyo"
     volumes:
